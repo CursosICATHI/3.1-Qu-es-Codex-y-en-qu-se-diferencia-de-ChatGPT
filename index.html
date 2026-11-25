@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Qué es Codex y en qué se diferencia de ChatGPT? Aplicación, editor y nube</title>
+<style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; color: #333; }
+    .slide { width: 100%; max-width: 1024px; margin: 20px auto; background: #fff; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); overflow: hidden; min-height: 500px; display: flex; flex-direction: column; }
+    .slide-header { background: #3d5a96; padding: 18px 30px; display: flex; align-items: center; justify-content: space-between; }
+    .slide-header h2 { color: #fff; font-size: 20px; font-weight: 700; }
+    .slide-header .num { color: rgba(255,255,255,0.6); font-size: 14px; }
+    .slide-body { padding: 30px; flex: 1; }
+    .slide-footer { background: #2e4575; padding: 10px 30px; display: flex; justify-content: space-between; color: rgba(255,255,255,0.7); font-size: 12px; }
+    .portada { min-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; }
+    .portada-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #3d5a96 0%, #e8755c 50%, #d05a7e 100%); z-index: 0; }
+    .portada .franja1 { position: absolute; bottom: 0; left: 0; right: 0; height: 12px; background: #e8755c; z-index: 1; }
+    .portada .franja2 { position: absolute; top: 0; right: 0; width: 25%; height: 8%; background: #d05a7e; z-index: 1; }
+    .portada .franja3 { position: absolute; bottom: 0; left: 0; width: 10%; height: 18%; background: #d05a7e; z-index: 1; }
+    .portada .franja4 { position: absolute; bottom: 0; right: 0; width: 15%; height: 12%; background: #e8755c; z-index: 1; }
+    .portada-content { position: relative; z-index: 2; padding: 40px; }
+    .portada .campus { color: rgba(255,255,255,0.7); font-size: 13px; letter-spacing: 4px; font-weight: 700; margin-bottom: 40px; }
+    .portada h1 { color: #fff; font-size: 48px; font-weight: 900; line-height: 1.2; margin-bottom: 8px; text-shadow: 3px 3px 12px rgba(0,0,0,0.2); }
+    .portada h1 span { display: block; font-size: 32px; font-weight: 600; }
+    .portada .tema-label { color: rgba(255,255,255,0.85); font-size: 18px; margin-top: 50px; }
+    .portada .tema { color: #fff; font-size: 28px; font-weight: 700; margin-top: 8px; }
+    .portada .instituto { color: rgba(255,255,255,0.75); font-size: 15px; margin-top: 50px; }
+    .portada .fecha { color: rgba(255,255,255,0.55); font-size: 13px; margin-top: 10px; }
+    h3 { color: #3d5a96; font-size: 22px; margin-bottom: 20px; }
+    h4 { color: #3d5a96; font-size: 18px; margin-bottom: 12px; }
+    .block { background: #fdf4f0; border-left: 5px solid #e8755c; padding: 18px 20px; border-radius: 0 10px 10px 0; margin: 15px 0; }
+    .block-title { font-weight: 700; color: #e8755c; margin-bottom: 6px; }
+    .block-blue { background: #eff2f8; border-left: 5px solid #3d5a96; }
+    .block-blue .block-title { color: #3d5a96; }
+    .block-pink { background: #fdf0f4; border-left: 5px solid #d05a7e; }
+    .block-pink .block-title { color: #d05a7e; }
+    .block-vino { background: #fdf0f2; border-left: 5px solid #691b31; }
+    .block-vino .block-title { color: #691b31; }
+    ul, ol { padding-left: 22px; line-height: 2; }
+    li { margin-bottom: 4px; }
+    .columns { display: flex; gap: 30px; }
+    .columns > div { flex: 1; }
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    th, td { border: 1px solid #ddd; padding: 10px 14px; text-align: left; }
+    th { background: #3d5a96; color: #fff; }
+    tr:nth-child(even) { background: #f8f9fc; }
+    .tag { display: inline-block; background: #3d5a96; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-right: 6px; }
+    .center { text-align: center; }
+    .final { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px; text-align: center; }
+    .final h2 { color: #3d5a96; font-size: 32px; margin-bottom: 20px; }
+    .final p { color: #666; font-size: 18px; }
+    .nav-bar { max-width: 1024px; margin: 10px auto; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .nav-bar button { background: #3d5a96; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; transition: all 0.2s; }
+    .nav-bar button:hover { background: #e8755c; transform: translateY(-2px); }
+    .nav-bar button.activo { background: #d05a7e; }
+    .nav-controls { max-width: 1024px; margin: 10px auto; display: flex; gap: 10px; justify-content: center; }
+    .nav-controls button { background: #3d5a96; color: #fff; border: none; padding: 10px 28px; border-radius: 25px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 15px; transition: all 0.2s; }
+    .nav-controls button:hover { background: #e8755c; transform: scale(1.05); }
+    .counter { max-width: 1024px; margin: 5px auto; text-align: center; font-size: 13px; color: #888; }
+    @media (max-width: 768px) {
+        .portada h1 { font-size: 32px; }
+        .portada h1 span { font-size: 24px; }
+        .portada .tema { font-size: 20px; }
+        .columns { flex-direction: column; }
+        .slide-body { padding: 20px; }
+        .slide-header h2 { font-size: 16px; }
+    }
+
+</style>
+</head>
+<body>
+
+<div class="nav-controls">
+    <button onclick="ant()">&#9664; Anterior</button>
+    <button onclick="sig()">Siguiente &#9654;</button>
+</div>
+<div class="counter" id="counter"></div>
+
+<div id="slides-container"></div>
+
+<script>
+const PORTADA = {
+    "etiqueta": "Tema 3.1 — Unidad 3",
+    "tema": "¿Qué es Codex y en qué<br>se diferencia de ChatGPT?",
+    "instituto": "Instituto de Capacitación para el Trabajo del Estado de Hidalgo"
+};
+const slides = [
+    {
+        "tipo": "portada"
+    },
+    {
+        "titulo": "Índice",
+        "num": "2 / 32",
+        "body": "<div class=\"columns\"><div><strong style=\"color:#3d5a96;\">1. Entender</strong><br>- Qué es un agente<br>- Qué es Codex<br>- Chat vs Codex<br>- De dónde viene<br><br><strong style=\"color:#3d5a96;\">2. Ubicarlo</strong><br>- Aplicación<br>- Editor<br>- Nube<br>- Terminal</div><div><strong style=\"color:#3d5a96;\">3. Usarlo</strong><br>- Cómo trabaja<br>- Qué puede hacer<br>- Requisitos<br>- Primeros pasos<br><br><strong style=\"color:#3d5a96;\">4. Cerrar</strong><br>- Límites y seguridad<br>- Ejercicio<br>- Resumen y glosario</div></div>"
+    },
+    {
+        "titulo": "Objetivo de aprendizaje",
+        "num": "3 / 32",
+        "body": "<p style=\"font-size:17px;line-height:1.7;margin-bottom:12px;\">Al terminar podrás <strong>explicar qué es Codex, diferenciarlo de ChatGPT y elegir dónde usarlo</strong> según tu tarea.</p><div class=\"block\"><div class=\"block-title\">Lo que sabrás hacer</div><ul style=\"font-size:16px;line-height:2.1;\"><li>Reconocer un agente frente a un chat.</li><li>Identificar las cuatro superficies de Codex.</li><li>Explicar el ciclo de plan, ejecución y entrega.</li><li>Decidir qué tareas delegarle en tu negocio.</li></ul></div>"
+    },
+    {
+        "titulo": "¿Qué es un agente?",
+        "num": "4 / 32",
+        "body": "<p style=\"font-size:17px;line-height:1.7;margin-bottom:12px;\">Un agente recibe un objetivo y <strong>actúa</strong>: lee archivos, ejecuta comandos, prueba y entrega cambios.</p><div class=\"columns\"><div><div class=\"block\"><div class=\"block-title\">Chat</div><ul style=\"font-size:16px;line-height:2.1;\"><li>Responde.</li><li>No toca archivos.</li><li>Espera la siguiente pregunta.</li></ul></div></div><div><div class=\"block block-blue\"><div class=\"block-title\">Agente</div><ul style=\"font-size:16px;line-height:2.1;\"><li>Planea.</li><li>Ejecuta.</li><li>Entrega evidencia.</li></ul></div></div></div>"
+    },
+    {
+        "titulo": "¿Qué es Codex?",
+        "num": "5 / 32",
+        "body": "<p style=\"font-size:17px;line-height:1.7;margin-bottom:12px;\">Codex es el <strong>agente de ingeniería de software de OpenAI</strong>: trabaja sobre los archivos de un proyecto, escribe código, ejecuta la aplicación y prueba.</p><ul style=\"font-size:16px;line-height:2.1;\"><li>Nació como agente en la nube (2025).</li><li>Hoy tiene aplicación de escritorio, editor, web, móvil y terminal.</li><li>Se usa con tu cuenta de ChatGPT.</li><li>Sirve para crear, mejorar y mantener páginas y apps.</li></ul>"
+    },
+    {
+        "titulo": "Chat vs Codex",
+        "num": "6 / 32",
+        "body": "<table style=\"font-size:14px;\"><tr><th>Aspecto</th><th>ChatGPT</th><th>Codex</th></tr><tr><td>Qué recibe</td><td>Pregunta o texto</td><td>Objetivo con carpeta</td></tr><tr><td>Qué hace</td><td>Responde y redacta</td><td>Lee, edita, ejecuta y prueba</td></tr><tr><td>Dónde</td><td>Conversación</td><td>Tu carpeta o la nube</td></tr><tr><td>Entrega</td><td>Texto</td><td>Archivos y cambios</td></tr><tr><td>Duración</td><td>Segundos</td><td>Minutos u horas</td></tr></table>"
+    },
+    {
+        "titulo": "De dónde viene",
+        "num": "7 / 32",
+        "body": "<p style=\"font-size:17px;line-height:1.7;margin-bottom:12px;\">OpenAI presentó Codex en 2025 como agente en la nube con tareas en paralelo y entornos aislados.</p><ul style=\"font-size:16px;line-height:2.1;\"><li>Cada tarea corría en un contenedor con el repositorio.</li><li>Internet desactivado durante la ejecución.</li><li>Evidencia con registros y pruebas.</li><li>Después llegaron CLI y la app de escritorio.</li></ul><div class=\"block block-blue\"><div class=\"block-title\">Idea</div>La herramienta evoluciona; los conceptos de contexto, encargo y revisión se mantienen.</div>"
+    },
+    {
+        "titulo": "Las superficies",
+        "num": "8 / 32",
+        "body": "<table style=\"font-size:14px;\"><tr><th>Superficie</th><th>Qué es</th><th>Cuándo</th></tr><tr><td>Escritorio</td><td>Centro de trabajo con proyectos e hilos</td><td>Uso diario</td></tr><tr><td>Editor</td><td>Extensión para VS Code y compatibles</td><td>Ver código y cambios</td></tr><tr><td>Nube</td><td>Tareas en entornos aislados</td><td>Trabajos largos o paralelos</td></tr><tr><td>Terminal</td><td>CLI de código abierto</td><td>Usuarios técnicos</td></tr></table>"
+    },
+    {
+        "titulo": "Aplicación de escritorio",
+        "num": "9 / 32",
+        "body": "<ul style=\"font-size:16px;line-height:2.1;\"><li>Organiza el trabajo por proyectos e hilos.</li><li>Permite varios agentes en paralelo.</li><li>Revisa cambios y comenta el diff.</li><li>Abre el archivo en tu editor.</li><li>Usa copias aisladas (worktrees).</li></ul>"
+    },
+    {
+        "titulo": "Editor",
+        "num": "10 / 32",
+        "body": "<p style=\"font-size:17px;line-height:1.7;margin-bottom:12px;\">La extensión integra Codex en VS Code, Cursor o Windsurf.</p><ul style=\"font-size:16px;line-height:2.1;\"><li>Ve el código y los cambios al mismo tiempo.</li><li>Usa el archivo abierto como contexto.</li><li>Ideal para revisar con detalle.</li><li>Sincroniza con la app y la nube.</li></ul>"
+    },
+    {
+        "titulo": "Nube",
+        "num": "11 / 32",
+        "body": "<p style=\"font-size:17px;line-height:1.7;margin-bottom:12px;\">Las tareas en la nube corren en entornos aislados, sin tu equipo encendido.</p><ul style=\"font-size:16px;line-height:2.1;\"><li>Se pueden lanzar varias en paralelo.</li><li>Internet se habilita solo si lo permites.</li><li>Puedes revisar desde el móvil.</li><li>Se integra con repositorios y revisiones.</li></ul>"
+    },
+    {
+        "titulo": "Terminal",
+        "num": "12 / 32",
+        "body": "<p style=\"font-size:17px;line-height:1.7;margin-bottom:12px;\">La CLI es un agente de código abierto que corre en la terminal.</p><ul style=\"font-size:16px;line-height:2.1;\"><li>Para usuarios técnicos.</li><li>Permite automatizar.</li><li>Comparte configuración con la app.</li><li>No es necesaria para esta unidad.</li></ul>"
+    },
+    {
+        "titulo": "Cómo trabaja",
+        "num": "13 / 32",
+        "body": "<div class=\"block block-blue center\" style=\"font-size:18px;\">Analizar → Planear → Ejecutar → Probar → Entregar</div><ol style=\"font-size:16px;line-height:2.1;\"><li><strong>Analiza:</strong> revisa el encargo y la carpeta.</li><li><strong>Planea:</strong> propone pasos antes de editar.</li><li><strong>Ejecuta:</strong> escribe y modifica archivos.</li><li><strong>Prueba:</strong> corre pruebas y revisa errores.</li><li><strong>Entrega:</strong> muestra cambios y evidencia.</li></ol>"
+    },
+    {
+        "titulo": "Qué puede hacer en un negocio",
+        "num": "14 / 32",
+        "body": "<table style=\"font-size:14px;\"><tr><th>Tarea</th><th>Ejemplo</th></tr><tr><td>Página web</td><td>Corregir diseño móvil y precios</td></tr><tr><td>App</td><td>Calculadora de cotizaciones</td></tr><tr><td>Automatización</td><td>Hoja con fórmulas o formulario</td></tr><tr><td>Mantenimiento</td><td>Revisar enlaces y errores</td></tr><tr><td>Documentación</td><td>Explicar qué hace el proyecto</td></tr><tr><td>Publicación</td><td>Preparar el paquete y guiar</td></tr></table>"
+    },
+    {
+        "titulo": "Qué no hace solo",
+        "num": "15 / 32",
+        "body": "<ul style=\"font-size:17px;line-height:2.1;\"><li>Decidir precios y condiciones.</li><li>Asumir la responsabilidad legal.</li><li>Garantizar que todo funcione a la primera.</li><li>Manejar datos sensibles por ti.</li></ul><div class=\"block block-vino\"><div class=\"block-title\">Regla</div>Codex ejecuta; tú decides y revisas.</div>"
+    },
+    {
+        "titulo": "Requisitos y planes",
+        "num": "16 / 32",
+        "body": "<ul style=\"font-size:16px;line-height:2.1;\"><li>Cuenta de ChatGPT activa.</li><li>Plan con Codex: Plus, Pro, Business, Enterprise o Edu.</li><li>Free y Go con acceso limitado según el periodo.</li><li>Créditos adicionales opcionales.</li><li>App de escritorio para archivos locales.</li></ul>"
+    },
+    {
+        "titulo": "Primeros pasos",
+        "num": "17 / 32",
+        "body": "<ol style=\"font-size:16px;line-height:2.1;\"><li>Descarga la aplicación e inicia sesión.</li><li>Crea un proyecto con nombre del negocio.</li><li>Abre la carpeta del proyecto.</li><li>Pide una tarea pequeña.</li><li>Revisa el plan y los cambios.</li></ol><div class=\"block block-blue\"><div class=\"block-title\">Prueba</div>«Lista los archivos y dime cuál es el principal».</div>"
+    },
+    {
+        "titulo": "La interfaz",
+        "num": "18 / 32",
+        "body": "<table style=\"font-size:14px;\"><tr><th>Elemento</th><th>Para qué</th></tr><tr><td>Cuadro de mensajes</td><td>Escribir el encargo</td></tr><tr><td>Selector de permisos</td><td>Manual o automático</td></tr><tr><td>Hilos</td><td>Una conversación por tarea</td></tr><tr><td>Panel de cambios</td><td>Ver el diff</td></tr><tr><td>Barra lateral</td><td>Proyectos y tareas</td></tr></table>"
+    },
+    {
+        "titulo": "Hilos y proyectos",
+        "num": "19 / 32",
+        "body": "<p style=\"font-size:17px;line-height:1.7;margin-bottom:12px;\">Un <strong>hilo</strong> es una conversación de trabajo; un <strong>proyecto</strong> agrupa hilos con una carpeta y reglas.</p><ul style=\"font-size:16px;line-height:2.1;\"><li>Separa el sitio de la app.</li><li>Conserva el contexto.</li><li>Evita mezclar cambios.</li><li>Facilita volver a una tarea.</li></ul>"
+    },
+    {
+        "titulo": "Diffs y worktrees",
+        "num": "20 / 32",
+        "body": "<div class=\"columns\"><div><div class=\"block block-blue\"><div class=\"block-title\">Diff</div><ul style=\"font-size:16px;line-height:2.1;\"><li>Líneas agregadas y eliminadas.</li><li>Tu forma de revisar.</li><li>Se puede comentar.</li></ul></div></div><div><div class=\"block\"><div class=\"block-title\">Worktree</div><ul style=\"font-size:16px;line-height:2.1;\"><li>Copia aislada del proyecto.</li><li>Varios agentes sin choques.</li><li>Se integra al final.</li></ul></div></div></div>"
+    },
+    {
+        "titulo": "Skills",
+        "num": "21 / 32",
+        "body": "<p style=\"font-size:17px;line-height:1.7;margin-bottom:12px;\">Las skills son paquetes de instrucciones, recursos y scripts para una tarea.</p><ul style=\"font-size:16px;line-height:2.1;\"><li>Se pueden invocar o activar solas.</li><li>Sirven para estandarizar.</li><li>Se comparten en el proyecto.</li><li>Solo usa las de fuentes confiables.</li></ul>"
+    },
+    {
+        "titulo": "Automatizaciones",
+        "num": "22 / 32",
+        "body": "<p style=\"font-size:17px;line-height:1.7;margin-bottom:12px;\">Puedes programar tareas que corren en segundo plano.</p><ul style=\"font-size:16px;line-height:2.1;\"><li>Combinan instrucciones y skills.</li><li>El resultado llega a una cola de revisión.</li><li>Útiles para mantenimiento.</li><li>Revisa la primera ejecución.</li></ul>"
+    },
+    {
+        "titulo": "Límites",
+        "num": "23 / 32",
+        "body": "<ul style=\"font-size:16px;line-height:2.1;\"><li>Necesita instrucciones claras.</li><li>Puede equivocarse y hay que probar.</li><li>El consumo crece con tareas largas.</li><li>Algunas funciones dependen del plan o versión.</li></ul>"
+    },
+    {
+        "titulo": "Seguridad",
+        "num": "24 / 32",
+        "body": "<div class=\"block block-vino\"><div class=\"block-title\">Desde el inicio</div>Trabaja en un sandbox limitado a tu carpeta y autoriza solo lo necesario.</div><ul style=\"font-size:16px;line-height:2.1;\"><li>No incluyas contraseñas ni datos de clientes.</li><li>Usa respaldos antes de cambios grandes.</li><li>Revisa los permisos que solicita.</li><li>Documenta lo que hiciste.</li></ul>"
+    },
+    {
+        "titulo": "Errores comunes",
+        "num": "25 / 32",
+        "body": "<table style=\"font-size:14px;\"><tr><th>Error</th><th>Consecuencia</th><th>Solución</th></tr><tr><td>Pedir todo a la vez</td><td>Resultado confuso</td><td>Una etapa por vez</td></tr><tr><td>No revisar el diff</td><td>Cambios no deseados</td><td>Leer antes de aceptar</td></tr><tr><td>No probar</td><td>Errores visibles</td><td>Probar en celular</td></tr><tr><td>Usar datos reales</td><td>Riesgo de privacidad</td><td>Datos de ejemplo</td></tr><tr><td>No respaldar</td><td>Pérdida de trabajo</td><td>Copia antes de cambiar</td></tr></table>"
+    },
+    {
+        "titulo": "Ejercicio",
+        "num": "26 / 32",
+        "body": "<p style=\"font-size:17px;line-height:1.7;margin-bottom:12px;\"><strong>Meta:</strong> reconocer el flujo completo de Codex.</p><ol style=\"font-size:16px;line-height:2.1;\"><li>Elige un proyecto pequeño.</li><li>Anota las siete etapas del ciclo.</li><li>Decide qué superficie usarías.</li><li>Define el criterio de éxito.</li><li>Compáralo con un compañero.</li></ol><div class=\"block block-blue\"><div class=\"block-title\">Entregable</div>Una hoja con el ciclo y la superficie elegida.</div>"
+    },
+    {
+        "titulo": "Checklist",
+        "num": "27 / 32",
+        "body": "<ul style=\"font-size:16px;line-height:2.1;\"><li>Entiendo la diferencia entre chat y agente.</li><li>Sé en qué superficies está Codex.</li><li>Reconozco el ciclo de trabajo.</li><li>Tengo cuenta y plan para usarlo.</li><li>Sé qué tareas delegar y cuáles no.</li></ul>"
+    },
+    {
+        "titulo": "Resumen",
+        "num": "28 / 32",
+        "body": "<ul style=\"font-size:17px;line-height:2.1;\"><li>Codex es un agente de OpenAI para proyectos.</li><li>Se usa en app, editor, nube y terminal.</li><li>Planea, ejecuta y prueba.</li><li>Tú revisas y decides.</li><li>El siguiente paso es preparar el espacio de trabajo.</li></ul><div class=\"block center\" style=\"margin-top:15px;\"><div class=\"block-title\">Frase final</div><em>El agente escribe; tú diriges.</em></div>"
+    },
+    {
+        "titulo": "Autoevaluación",
+        "num": "29 / 32",
+        "body": "<ol style=\"font-size:17px;line-height:2.1;\"><li>¿Qué diferencia hay entre ChatGPT y Codex?</li><li>¿Cuáles son las cuatro superficies?</li><li>¿Qué es un worktree?</li><li>¿Qué evidencia entrega Codex?</li><li>¿Qué necesitas para empezar?</li></ol>"
+    },
+    {
+        "titulo": "Glosario",
+        "num": "30 / 32",
+        "body": "<table style=\"font-size:13px;\"><tr><th>Término</th><th>Significado</th></tr><tr><td>Agente</td><td>Sistema que ejecuta tareas.</td></tr><tr><td>Codex</td><td>Agente de OpenAI para código y archivos.</td></tr><tr><td>Hilo</td><td>Conversación de trabajo.</td></tr><tr><td>Diff</td><td>Cambios entre versiones.</td></tr><tr><td>Worktree</td><td>Copia aislada del proyecto.</td></tr><tr><td>Sandbox</td><td>Espacio limitado de archivos y red.</td></tr></table>"
+    },
+    {
+        "titulo": "Recursos",
+        "num": "31 / 32",
+        "body": "<div class=\"block block-blue\"><div class=\"block-title\">Documentación oficial</div><ul style=\"font-size:16px;line-height:2.1;\"><li>openai.com/codex</li><li>developers.openai.com/codex</li><li>Guía de inicio y permisos</li><li>Aplicación de escritorio y CLI</li></ul></div><p style=\"font-size:15px;line-height:1.7;margin-bottom:12px;\">Verifica los nombres de las funciones en tu versión: el producto cambia con frecuencia.</p>"
+    },
+    {
+        "titulo": "Gracias por su atención",
+        "num": "32 / 32",
+        "body": "<div class=\"final\">\n            <h2>¿Dudas o comentarios?</h2>\n            <p>Participa en el foro del tema</p>\n            <p style=\"margin-top:30px;color:#3d5a96;font-weight:700;\">ICATHI 4.0 — Inteligencia Artificial para tu Negocio</p>\n        </div>"
+    }
+];
+
+let actual = 0;
+
+function renderSlide(i) {
+    const s = slides[i];
+    const c = document.getElementById('slides-container');
+    if (s.tipo === 'portada') {
+        c.innerHTML = '<div class="slide portada">' +
+            '<div class="portada-bg"></div>' +
+            '<div class="franja1"></div><div class="franja2"></div><div class="franja3"></div><div class="franja4"></div>' +
+            '<div class="portada-content">' +
+            '<div class="campus">CAMPUS VIRTUAL</div>' +
+            '<h1>Inteligencia Artificial<span>para tu Negocio</span></h1>' +
+            '<div class="tema-label">' + PORTADA.etiqueta + '</div>' +
+            '<div class="tema">' + PORTADA.tema + '</div>' +
+            '<div class="instituto">' + PORTADA.instituto + '</div>' +
+            '<div class="fecha">2026</div>' +
+            '</div></div>';
+    } else {
+        c.innerHTML = '<div class="slide">' +
+            '<div class="slide-header"><h2>' + s.titulo + '</h2><span class="num">' + s.num + '</span></div>' +
+            '<div class="slide-body">' + s.body + '</div>' +
+            '<div class="slide-footer"><span>ICATHI 4.0</span><span>' + s.num + '</span></div>' +
+            '</div>';
+    }
+    document.getElementById('counter').textContent = 'Diapositiva ' + (i + 1) + ' de ' + slides.length;
+    document.querySelectorAll('.nav-bar button').forEach((b, idx) => {
+        b.classList.toggle('activo', idx === i);
+    });
+}
+
+function sig() {
+    if (actual < slides.length - 1) { actual++; renderSlide(actual); }
+}
+function ant() {
+    if (actual > 0) { actual--; renderSlide(actual); }
+}
+
+// Nav bar
+document.addEventListener('DOMContentLoaded', () => {
+    const nav = document.createElement('div');
+    nav.className = 'nav-bar';
+    slides.forEach((_, i) => {
+        const b = document.createElement('button');
+        b.textContent = i + 1;
+        b.onclick = () => { actual = i; renderSlide(i); };
+        nav.appendChild(b);
+    });
+    document.body.insertBefore(nav, document.querySelector('.nav-controls'));
+    renderSlide(0);
+});
+</script>
+
+</body>
+</html>
